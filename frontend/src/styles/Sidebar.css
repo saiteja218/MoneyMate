@@ -1,0 +1,73 @@
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background-color: #192b45;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.sidebar-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-item {
+    margin-bottom: 15px;
+    background-color: #2a3f5f;
+    border-radius: 10px;
+    color: white;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar-link:hover {
+    background-color: #3a5275;
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+.greeting {
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.user-name {
+    color: #3eaa85;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+h2 {
+    color: white;
+}
+
+.css-cokf1l-MuiListItemIcon-root {
+    min-width: 26px;
+}

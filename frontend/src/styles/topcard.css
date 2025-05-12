@@ -1,0 +1,5 @@
+.top-cards{
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 0 20px 0;
+}
