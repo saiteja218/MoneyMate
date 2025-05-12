@@ -14,7 +14,7 @@ dotenv.config({path:".env"})
  
 const app = express();
 
-const __dirname=path.resolve()
+// const __dirname=path.resolve()
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -33,13 +33,13 @@ app.use('/api/insights', insightsRoutes);
 // console.log(process.env.GROQ_API_KEY)
    
 
-if(process.env.NODE_ENV==='production'){
-  app.use(express.static(path.join(__dirname,'../frontend/dist')));
+// if(process.env.NODE_ENV==='production'){
+//   app.use(express.static(path.join(__dirname,'../frontend/dist')));
 
-  app.get('*',(req,res)=>{
-      res.sendFile(path.join(__dirname,'../frontend/dist/index.html'));
-  })
-}
+//   app.get('*',(req,res)=>{
+//       res.sendFile(path.join(__dirname,'../frontend/dist/index.html'));
+//   })
+// }
 
 
 
