@@ -31,15 +31,17 @@ app.use('/api/income', incomeRoutes);
 app.use('/api/expense', expenseRoutes);
 app.use('/api/insights', insightsRoutes);
 // console.log(process.env.GROQ_API_KEY)
-
+   
 
 if(process.env.NODE_ENV==='production'){
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  app.use(express.static(path.join(__dirname,'../frontend/dist')));
 
   app.get('*',(req,res)=>{
       res.sendFile(path.join(__dirname,'../frontend/dist/index.html'));
   })
 }
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
