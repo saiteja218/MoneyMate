@@ -10,11 +10,11 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import path from 'path'
 
-dotenv.config({path:".env"})    
- 
+dotenv.config({ path: ".env" })
+
 const app = express();
 
-const __dirname=path.resolve()
+const __dirname = path.resolve()
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -31,13 +31,13 @@ app.use('/api/income', incomeRoutes);
 app.use('/api/expense', expenseRoutes);
 app.use('/api/insights', insightsRoutes);
 // console.log(process.env.GROQ_API_KEY)
-   
 
-if(process.env.NODE_ENV==='production'){
-  app.use(express.static(path.join(__dirname,'../frontend/dist')));
 
-  app.get('/{*any}',(req,res)=>{
-      res.sendFile(path.join(__dirname,'../frontend/dist/index.html'));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+  app.get('/{*any}', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
   })
 }
 

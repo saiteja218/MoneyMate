@@ -20,11 +20,11 @@ export default function Navbar() {
             <AppBar position="fixed" elevation={1} sx={{ zIndex: theme.zIndex.drawer + 1, background: '#ffffff', color: '#000' }} >
                 <Toolbar sx={{}}>
                     {
-                        isMobile && (
-                            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}> {/* add onClick={onMenuClick} */}
-                                <MenuIcon />
-                            </IconButton>
-                        )
+                        // isMobile && (
+                        //     <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}> {/* add onClick={onMenuClick} */}
+                        //         <MenuIcon />
+                        //     </IconButton>
+                        // )
                     }
 
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>

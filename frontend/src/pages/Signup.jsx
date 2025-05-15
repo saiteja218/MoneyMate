@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { signupUser } from '../store/slices/authSlice';
 import { Link } from 'react-router-dom';
-
+import '../styles/login.css'
 
 export default function Signup() {
   const [formData, setFormData] = React.useState({ name: '', email: '', password: '' });
@@ -52,7 +52,7 @@ export default function Signup() {
       <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
         <Box sx={{ width: isMobile ? '100%' : '75%', maxWidth: 500 }}>
           <Typography component="h1" variant="h5" fontWeight="bold" mb={2} textAlign="center">
-            Make Every Rupee Count with <span style={{ color: '#1976d2' }}>MoneyMate</span>.
+            Make Every Rupee Count with <span style={{ color: '#41aa84' }}>MoneyMate</span>.
           </Typography>
           <Card sx={{ borderRadius: '15px' }}>
             <CardContent>
@@ -99,7 +99,7 @@ export default function Signup() {
 
 
       <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5', p: 2 }}>
-        <Box component="img" src={right} alt="Signup" sx={{ width: '90%', maxHeight: '100%', objectFit: 'contain' }} />
+        <Box component="img" src={right} alt="Signup" sx={{ width: '80%', maxHeight: '100%', objectFit: 'contain' }} />
       </Box>
     </Box>
    

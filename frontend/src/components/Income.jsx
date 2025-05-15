@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getIncome, addIncome, getExpense, deleteIncome } from '../store/slices/transactionSlice.js';
 import formatDate from '../utils/formatDate.js';
-import { Paper, Typography, List, ListItem, ListItemText, Box, Pagination, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, IconButton, } from '@mui/material';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { Paper, Typography, List, ListItem, ListItemText, Box, Pagination, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, IconButton, useTheme, useMediaQuery } from '@mui/material';
+import { BarChart } from '@mui/x-charts';
 import CloseIcon from '@mui/icons-material/Close';
 import TopCards from './TopCards';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 export default function Income() {
@@ -73,11 +74,13 @@ export default function Income() {
         acc[date] += transaction.amount;
         return acc;
     }, {})
+    // console.log(groupedData);
 
     const barChartData = Object.entries(groupedData).map(([date, amount]) => ({
         date,
         income: amount
     }))
+    // console.log(barChartData)
 
     const handleAddIncome = async () => {
         const res = await dispatch(addIncome(newIncome));
@@ -102,6 +105,9 @@ export default function Income() {
     useEffect(() => {
         setIncomeProp(income);
     }, [allIncome]);
+
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
 
     return (
@@ -149,9 +155,9 @@ export default function Income() {
                 </DialogContent>
             </Dialog>
 
-            <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-between', flexWrap: "wrap", gap: 2 }}>
-                <Box sx={{ width: { xs: '100%', md: '48%' }, }}>
-                    <Paper sx={{ p: 1, borderRadius: 2, height: '100%', flex: '1 1 48%', }}>
+            <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-evenly', flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "", gap: 2, }}>
+                <Box sx={{ width: { xs: '100%', md: '50%' }, m: !isMobile ? 3 : 0, mr: !isMobile ? 1.5 : 0, }} size={{ xs: 12, md: 6 }}>
+                    <Paper sx={{ p: 1, borderRadius: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             Recent income transactions
                             <button style={{
@@ -159,35 +165,38 @@ export default function Income() {
                             }}
                                 onClick={() => { setOpen(true) }}>Add Income</button>
                         </Typography>
-                        <List>
-                            {currentTransactions.map((transaction, index) => (
-                                <ListItem key={index}
-                                    sx={{
-                                        '&:hover .delete-icon': { opacity: 1 },
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                    }}>
-                                    <AttachMoneyIcon color="success" sx={{ mr: 5 }} />
+                        <Box sx={{flexGrow:1,overflowY:"auto"}}>
+                            <List>
+                                {currentTransactions.map((transaction, index) => (
+                                    <ListItem key={index}
+                                        sx={{
+                                            '&:hover .delete-icon': { opacity: 1 },
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                        }}>
+                                        <AttachMoneyIcon color="success" sx={{ mr: 5 }} />
 
-                                    <ListItemText
-                                        primary={`${transaction.source || transaction.category} - ₹${transaction.amount}`}
-                                        secondary={formatDate(transaction.date)}
-                                    />
-                                    <IconButton
-                                        edge="end"
-                                        aria-label="delete"
-                                        className="delete-icon"
-                                        onClick={() => handleDelete(transaction._id)}
-                                        sx={{ opacity: 0, transition: 'opacity 0.3s',mr: 2 }}
-                                    >
-                                        <DeleteIcon color="error" />
-                                    </IconButton>
-                                </ListItem>
-                            ))}
-                        </List>
+                                        <ListItemText
+                                            primary={`${transaction.source || transaction.category} - ₹${transaction.amount}`}
+                                            secondary={formatDate(transaction.date)}
+                                        />
+                                        <IconButton
+                                            edge="end"
+                                            aria-label="delete"
+                                            className="delete-icon"
+                                            onClick={() => handleDelete(transaction._id)}
+                                            sx={{ opacity: 0, transition: 'opacity 0.3s', mr: 2 }}
+                                        >
+                                            <DeleteIcon color="error" />
+                                        </IconButton>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Box>
+
                         <Box>
-                            <Pagination sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}
+                            <Pagination sx={{ mt: "auto", display: 'flex', justifyContent: 'center',p:1 }}
                                 count={totalPages}
                                 page={currentPage}
                                 onChange={(e, value) => {
@@ -200,20 +209,24 @@ export default function Income() {
                     </Paper>
                 </Box>
 
-                <Box sx={{ width: { xs: '100%', md: '50%' } }}>
-                    <Paper sx={{ p: 1, borderRadius: 2, height: '100%', minWidth: '300px' }}>
+                <Box sx={{ width: { xs: '100%', md: '50%' }, m:!isMobile?3:1, ml: !isMobile ? 1.5 : 0 }} size={{ xs: 12, md: 6 }}>
+                    <Paper sx={{ p: 1, borderRadius: 2, height: '100%' }}>
                         <Typography variant="h6" gutterBottom sx={{ p: 1 }}>
                             Income by Date
                         </Typography>
-                        <ResponsiveContainer width="100%" height={400}>
-                            <BarChart data={barChartData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" />
-                                <YAxis />
-                                <Tooltip />
-                                <Bar dataKey="income" fill="#3eaa85" />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <BarChart
+                            xAxis={[{ scaleType: 'band', data: barChartData.map((d) => (d.date)) }]}
+                            series={[
+                                {
+                                    data: barChartData.map((d) => (d.income)),
+                                    label: "income",
+                                    color: "#3eaa85"
+                                }
+                            ]}
+                            height={400}
+                            margin={{ top: 20, bottom: 50, left: 40, right: 10 }}
+
+                        />
                     </Paper>
                 </Box>
             </Box>

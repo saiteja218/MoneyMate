@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 
-import './App.css'
+
 
 function App() {
   const { user } = useSelector((state) => state.auth);

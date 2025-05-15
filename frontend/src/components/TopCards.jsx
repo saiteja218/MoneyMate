@@ -43,21 +43,21 @@ export default function TopCards({income, expense}) {
   return (
     <Grid container spacing={2} sx={{ padding: 1, display:"flex",justifyContent:"space-evenly" }} >
       
-      <Grid span={12} size={{ xs: 12, sm: 4 }} >
+      <Grid span={12} size={{ xs: 12,sm:4}} >
         <Paper elevation={3} sx={{ padding: 1, borderRadius: 2, backgroundColor: '#f5f5f5', pr:"7rem"}}>
           <Typography variant="p" sx={{ fontWeight: 500 }}>Total Income</Typography>
           <Typography variant="body1" sx={{ fontSize: '1.2rem', marginTop: 1, }}>₹{income}</Typography>
         </Paper>
       </Grid>
 
-      <Grid span={12} size={{ xs: 12, sm: 4 }}>
+      <Grid span={12} size={{ xs: 12,sm:4 }}>
         <Paper elevation={3} sx={{ padding: 1, borderRadius: 2, backgroundColor: '#f5f5f5', pr:"7rem" }}>
           <Typography variant="p" sx={{ fontWeight: 500 }}>Total Expense</Typography>
           <Typography variant="body1" sx={{ fontSize: '1.2rem', marginTop: 1 }}>₹{expense}</Typography>
         </Paper>
       </Grid>
 
-      <Grid span={12} size={{ xs: 12, sm: 4 }}>
+      <Grid span={12} size={{ xs: 12,sm:4 }}>
         <Paper elevation={3} sx={{ padding: 1, borderRadius: 2, backgroundColor: '#f5f5f5', pr:"7rem"}}>
           <Typography variant="p" sx={{ fontWeight: 500 }}>Net Savings</Typography>
           <Typography variant="body1" sx={{ fontSize: '1.2rem', marginTop: 1 }}>₹{savings}</Typography>

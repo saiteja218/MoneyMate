@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getIncome, getExpense } from '../store/slices/transactionSlice';
 import formatDate from '../utils/formatDate.js';
-import { Grid, Paper, Typography, List, ListItem, ListItemText, Box, Pagination, } from '@mui/material';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, } from 'recharts';
+import { Grid, Paper, Typography, List, ListItem, ListItemText, Box, Pagination, useTheme, useMediaQuery } from '@mui/material';
+// import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, } from 'recharts';
 import TopCards from './TopCards.jsx';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
+import { PieChart } from '@mui/x-charts/PieChart';
 
 export default function ExpenditureOverview() {
   const [income, setIncome] = useState(0);
@@ -59,40 +60,42 @@ export default function ExpenditureOverview() {
   // console.log(totalPages)
 
   const chartData = [
-    { name: 'Income', value: income },
-    { name: 'Expense', value: expense },
-    { name: 'Savings', value: savings },
+    { id: 0, value: income, label: 'Income', color: '#40ad86' },
+    { id: 1, value: expense, label: 'Expense', color: '#192b45' },
+    { id: 2, value: savings, label: 'Savings', color: '#febf4e' },
   ];
-  const COLORS = ['#3eaa85', '#182d44', '#fcbf4c'];
-
+  // const COLORS = ['#3eaa85', '#182d44', '#fcbf4c'];
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <>
       <TopCards income={income} expense={expense} />
-      <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-between', flexWrap: "wrap", gap: 2 }}>
+      <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-evenly', flexDirection: isMobile ? "column" : "row",alignItems: isMobile ? "center" : "",gap:2, }}>
 
-        <Box sx={{ width: { xs: '100%', md: '48%' }, }}>
-          <Paper sx={{ p: 1, borderRadius: 2, height: '100%', flex: '1 1 48%', }}>
+        <Box sx={{ width: { xs: '100%', md: '50%' }, m:!isMobile?3:0, mr: !isMobile ? 1.5 : 0, }} size={{ xs: 12, md: 6 }}>
+          <Paper sx={{ p: 1, borderRadius: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
             <Typography variant="h6" gutterBottom>
               Recent Transactions
             </Typography>
-            <List>
-              {currentTransactions.map((transaction, index) => (
-                <ListItem key={index}>
-                  {transaction.source ? (
-                    <AttachMoneyIcon color="success" sx={{ mr: 5 }} />
-                  ) : (
-                    <MoneyOffIcon color="error" sx={{ mr: 5 }} />
-                  )}
-                  <ListItemText
-                    primary={`${transaction.source || transaction.category} - ₹${transaction.amount}`}
-                    secondary={formatDate(transaction.date)}
-                  />
-                </ListItem>
+            <Box sx={{ flexGrow: 1 }}>
+              <List >
+                {currentTransactions.map((transaction, index) => (
+                  <ListItem key={index}>
+                    {transaction.source ? (
+                      <AttachMoneyIcon color="success" sx={{ mr: 5 }} />
+                    ) : (
+                      <MoneyOffIcon color="error" sx={{ mr: 5 }} />
+                    )}
+                    <ListItemText
+                      primary={`${transaction.source || transaction.category} - ₹${transaction.amount}`}
+                      secondary={formatDate(transaction.date)}
+                    />
+                  </ListItem>
                 ))}
-          </List>
-          
+              </List>
+            </Box>
             <Box>
-              <Pagination sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}
+              <Pagination sx={{ mt: "auto", display: 'flex', justifyContent: 'center',p:1 }}
                 count={totalPages}
                 page={currentPage}
                 onChange={(e, value) => {
@@ -105,35 +108,39 @@ export default function ExpenditureOverview() {
           </Paper>
         </Box>
 
-        <Box sx={{ width: { xs: '100%', md: '50%' }, }}>
-          <Paper sx={{ p: 1, borderRadius: 2, height: '100%', flex: '1 1 48%', minWidth: "300px" }}>
+        <Box sx={{ width: { xs: '100%', md: '50%' }, m:!isMobile?3:1, ml: !isMobile ? 1.5 : 0 }} size={{ xs: 12, md: 6 }}>
+          <Paper sx={{ p: 1, borderRadius: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               Financial Overview
             </Typography>
-            <ResponsiveContainer width="100%" height={400}>
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  dataKey="value"
-                  nameKey="name"
-                  label
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+            <Box sx={{ height: 400 }}>
+              <PieChart
+                series={[
+                  {
+                    data: chartData,
+                    innerRadius: 30,
+                    outerRadius: 100,
+                    paddingAngle: 5,
+                    cornerRadius: 5,
+                    startAngle: 0,
+                    endAngle: 360,
+                    valueFormatter: ({ value }) => `₹${value}`,
+                    // colors: ['#40ad86', '#192b45', '#febf4e'],
+                  },
+                ]}
+                height={350}
+                slotProps={{
+                  legend: {
+                    direction: 'row',
+                    position: { vertical: 'bottom', horizontal: 'middle' },
+                    padding: 8,
+                  },
+                }}
+              />
+            </Box>
           </Paper>
         </Box>
+
       </Box>
     </>
   );
