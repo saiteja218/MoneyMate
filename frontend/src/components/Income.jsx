@@ -9,11 +9,13 @@ import TopCards from './TopCards';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 
 
 export default function Income() {
-    const [income, setIncome] = useState(0);
+    // const [income, setIncome] = useState(0);
     const [incomeProp, setIncomeProp] = useState(0);
     const [expense, setExpense] = useState(0);
     const [allIncome, setAllIncome] = useState([]);
@@ -21,13 +23,15 @@ export default function Income() {
     const [currentPage, setCurrentPage] = useState(1);
     const transactionsPerPage = 5;
     const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const Open = Boolean(anchorEl);
     const [newIncome, setNewIncome] = useState({
         source: "",
         amount: 0,
         date: null
     })
     const dispatch = useDispatch();
-
+    const income = allIncome.reduce((acc, item) => acc + item.amount, 0);
     useEffect(() => {
         const fetchData = async () => {
             const incomeRes = await dispatch(getIncome());
@@ -36,7 +40,7 @@ export default function Income() {
             if (incomeRes.meta.requestStatus === 'fulfilled') {
                 const totalIncome = incomeRes.payload.reduce(
                     (acc, item) => acc + item.amount, 0);
-                setIncome(totalIncome);
+                // setIncome(totalIncome);
                 setAllIncome(incomeRes.payload);
             }
             if (expenseRes.meta.requestStatus === 'fulfilled') {
@@ -102,17 +106,24 @@ export default function Income() {
             setAllIncome((prev) => prev.filter((item) => item._id !== id));
         }
     }
-    useEffect(() => {
-        setIncomeProp(income);
-    }, [allIncome]);
+    // useEffect(() => {
+    //     setIncomeProp(income);
+    // }, [allIncome]);
 
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
+    const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
 
     return (
         <>
-            <TopCards income={incomeProp} expense={expense} />
+            <TopCards income={income} expense={expense} />
             <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
                 <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     Add New Income
@@ -160,12 +171,38 @@ export default function Income() {
                     <Paper sx={{ p: 1, borderRadius: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             Recent income transactions
-                            <button style={{
-                                float: 'right', padding: "3px 8px", backgroundColor: "#1876d3", color: "white", borderRadius: "5px", fontWeight: "600", margin: "5px", border: "none"
-                            }}
-                                onClick={() => { setOpen(true) }}>Add Income</button>
+                            <div>
+                                {/* <div>
+                                    <Button
+                                        id="basic-button"
+                                        aria-controls={Open ? 'basic-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={Open ? 'true' : undefined}
+                                        onClick={handleClick}
+                                    >
+                                        Filter By
+                                    </Button>
+                                    <Menu
+                                        id="basic-menu"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                        }}
+                                    >
+                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                    </Menu>
+                                </div> */}
+                                <Button variant="contained" style={{
+                                    float: 'right', fontSize: '12px'
+                                }}
+                                    onClick={() => { setOpen(true) }}>Add Income</Button>
+                            </div>
                         </Typography>
-                        <Box sx={{flexGrow:1,overflowY:"auto"}}>
+                        <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
                             <List>
                                 {currentTransactions.map((transaction, index) => (
                                     <ListItem key={index}
@@ -196,7 +233,7 @@ export default function Income() {
                         </Box>
 
                         <Box>
-                            <Pagination sx={{ mt: "auto", display: 'flex', justifyContent: 'center',p:1 }}
+                            <Pagination sx={{ mt: "auto", display: 'flex', justifyContent: 'center', p: 1 }}
                                 count={totalPages}
                                 page={currentPage}
                                 onChange={(e, value) => {
@@ -209,7 +246,7 @@ export default function Income() {
                     </Paper>
                 </Box>
 
-                <Box sx={{ width: { xs: '100%', md: '50%' }, m:!isMobile?3:1, ml: !isMobile ? 1.5 : 0 }} size={{ xs: 12, md: 6 }}>
+                <Box sx={{ width: { xs: '100%', md: '50%' }, m: !isMobile ? 3 : 1, ml: !isMobile ? 1.5 : 0 }} size={{ xs: 12, md: 6 }}>
                     <Paper sx={{ p: 1, borderRadius: 2, height: '100%' }}>
                         <Typography variant="h6" gutterBottom sx={{ p: 1 }}>
                             Income by Date

@@ -1,6 +1,12 @@
-body{
-    background-color: #f6f4f4;
-    max-height: 100vh;
-    margin: 0;
-    padding: 0;
+body {
+  margin: 0;
+  padding: 0;
+  overflow-y: visible; /* default for small screens */
+}
+
+/* For screens larger than 900px */
+@media screen and (min-width: 901px) {
+  body {
+    overflow: auto;
+  }
 }

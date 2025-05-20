@@ -5,9 +5,11 @@ import App from './App.jsx'
 import store from './store/store'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import { ThemeContextProvider } from './context/ThemeContext';
 
 
 createRoot(document.getElementById('root')).render(
+  <ThemeContextProvider>
   <BrowserRouter>
   <StrictMode>
     <Provider store={store}>
@@ -15,4 +17,5 @@ createRoot(document.getElementById('root')).render(
     </Provider>
   </StrictMode>
   </BrowserRouter>,  
+  </ThemeContextProvider>
 )

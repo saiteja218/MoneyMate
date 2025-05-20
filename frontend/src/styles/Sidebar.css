@@ -1,6 +1,6 @@
 .sidebar {
-    width: 250px;
-    height: "100% ";
+    width: 260px;
+    height: 100vh ;
     background-color: #0c1c34;
     padding: 20px;
     /* position: relative; */
@@ -58,7 +58,7 @@
     padding: 12px 16px;
     border-radius: 50px;
     background-color: #192b45;
-    
+    /* width: 220px; */
     transition: background-color 0.3s ease;
     display: flex;
     align-items: center;
@@ -100,11 +100,11 @@
 
 .welcome-text {
   font-size: 20px;
-  color: #9fc9ff;
+  color: white;
   margin: 0;
 }
 
 .user-name {
-  color: #3da683;
+  color: white;
   font-weight: 600;
 }

@@ -10,6 +10,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../store/slices/authSlice';
 
+
 export default function TopBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
@@ -53,6 +54,10 @@ export default function TopBar() {
         <MenuItem onClick={() => handleClose('/home/insights')}>
           <ListItemIcon><SmartToyIcon /></ListItemIcon>
           <ListItemText primary="AI Insights" />
+        </MenuItem>
+        <MenuItem onClick={() => handleClose('/home/SavingsGoal')}>
+          <ListItemIcon><SmartToyIcon /></ListItemIcon>
+          <ListItemText primary="Savings Goal" />
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon><LogoutIcon /></ListItemIcon>

@@ -1,41 +1,41 @@
-import { useState } from 'react'
-import Signup from './pages/Signup'
-import Login from './pages/Login'
-import Home from './pages/Home'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
-import { useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-
-
-
+import { useSelector } from 'react-redux';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { CssBaseline } from '@mui/material'; 
+import { useMemo } from 'react';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
+import Home from './pages/Home';
 
 function App() {
-  const { user } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth?.user);
+const isOtpVerified = useSelector((state) => state.auth?.isOtpVerified);
+
+  const isAuthenticated = user && isOtpVerified;
+  console.log("User:", user);
+console.log("OTP Verified:", isOtpVerified);
+
 
   return (
-
-    <div style={{ backgroundColor: '#f6f4f4' }}>
-      {/* <Signup /> */}
-      
+    <>
+      <CssBaseline />
       <Routes>
-      <Route path="/" element={<Navigate to={user ? "/home" : "/login"} />} />
-      <Route path="/signup" element={user ? <Navigate to="/home" /> : <Signup />} /> 
-      <Route path="/login" element={user?<Navigate to="/home"/>: <Login />} />
-      <Route path="/home/*" element={!user ? <Navigate to="/login"/>:<Home />} />
+        <Route path="/" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />
+        <Route path="/signup" element={isAuthenticated ? <Navigate to="/home" /> : <Signup />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/home" /> : <Login />} />
+        <Route path="/home/*" element={!isAuthenticated ? <Navigate to="/login" /> : <Home />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
 
       <Toaster
         position="top-center"
         toastOptions={{
           duration: 3000,
-          style: {
-            zIndex: 9999,
-          },
-        }}/>
-    </div>
-  )
+          style: { zIndex: 9999 },
+        }}
+      />
+    </>
+  );
 }
 
-export default App
+export default App;

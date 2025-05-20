@@ -12,8 +12,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Expense() {
     const [income, setIncome] = useState(0);
-    const [expense, setExpense] = useState(0);
-    // const [allIncome, setAllIncome] = useState([]);
+    // const [expense, setExpense] = useState(0);
+    const [allIncome, setAllIncome] = useState([]); 
     const [allExpense, setAllExpense] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const transactionsPerPage = 5;
@@ -24,6 +24,7 @@ export default function Expense() {
         date: null
     })
     const dispatch = useDispatch();
+const expense = allExpense.reduce((acc, item) => acc + item.amount, 0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,12 +35,12 @@ export default function Expense() {
                 const totalIncome = incomeRes.payload.reduce(
                     (acc, item) => acc + item.amount, 0);
                 setIncome(totalIncome);
-                // setAllIncome(incomeRes.payload);
+                setAllIncome(incomeRes.payload);
             }
             if (expenseRes.meta.requestStatus === 'fulfilled') {
                 const totalExpense = expenseRes.payload.reduce(
                     (acc, item) => acc + item.amount, 0);
-                setExpense(totalExpense);
+                // setExpense(totalExpense);
                 setAllExpense(expenseRes.payload);
             }
         };

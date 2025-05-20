@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, TextField, Button, Card, CardContent, useMediaQuery, useTheme } from '@mui/material';
-import right from '../assets/right.png';
+import right from '../assets/right-1.png';
 import { useDispatch } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { signupUser } from '../store/slices/authSlice';
@@ -9,7 +9,8 @@ import '../styles/login.css'
 
 export default function Signup() {
   const [formData, setFormData] = React.useState({ name: '', email: '', password: '' });
-
+  
+   
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,10 +44,12 @@ export default function Signup() {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const cardBg = theme.palette.mode === 'dark' ? theme.palette.background.paper : '#f5f5f5';
+  const textColor = theme.palette.text.primary;
 
   return (
    
-    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: isMobile ? 'column' : 'row' ,backgroundColor: '#f6f4f4'}}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: isMobile ? 'column' : 'row' ,backgroundColor: cardBg}}>
 
 
       <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
@@ -98,7 +101,7 @@ export default function Signup() {
       </Box>
 
 
-      <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5', p: 2 }}>
+      <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: cardBg, p: 2 }}>
         <Box component="img" src={right} alt="Signup" sx={{ width: '80%', maxHeight: '100%', objectFit: 'contain' }} />
       </Box>
     </Box>

@@ -1,8 +1,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { Box, Paper, Typography, Tabs, Tab, CircularProgress } from '@mui/material';
+import { Box, Paper, Typography, Tabs, Tab, CircularProgress, useTheme } from '@mui/material';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import axiosInstance from '../utils/axios.js';
+import ThemeToggle from '../components/ThemeToggle.jsx';
 
 export default function Insights() {
     const [tab, setTab] = useState(0);
@@ -42,10 +43,15 @@ export default function Insights() {
         if (tab === 0) return <Typography>{weeklyInsights}</Typography>;
         if (tab === 1) return <Typography>{monthlyInsights}</Typography>;
         return <Typography>{yearlyInsights}</Typography>;
-      };
+    };
+    const theme = useTheme()
+    const cardBg = theme.palette.mode === 'dark' ? theme.palette.background.paper : '#f5f5f5';
 
     return (
         <>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', pr: 4 }}>
+                <ThemeToggle />
+            </Box>
             <Box sx={{ maxWidth: 800, padding: '20px' }}>
                 <Paper elevation={3} sx={{ padding: '20px', borderRadius: '10px' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
@@ -65,7 +71,7 @@ export default function Insights() {
                                 <Typography variant="body1" sx={{ marginTop: '20px' }}>
                                     {weeklyInsights}
                                 </Typography>
-                            ) : tab===1 ? (
+                            ) : tab === 1 ? (
                                 <Typography variant="body1" sx={{ marginTop: '20px' }}>
                                     {monthlyInsights}
                                 </Typography>

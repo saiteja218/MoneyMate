@@ -68,7 +68,7 @@ export default function ExpenditureOverview() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   return (
-    <>
+    <div >
       <TopCards income={income} expense={expense} />
       <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-evenly', flexDirection: isMobile ? "column" : "row",alignItems: isMobile ? "center" : "",gap:2, }}>
 
@@ -142,6 +142,6 @@ export default function ExpenditureOverview() {
         </Box>
 
       </Box>
-    </>
+    </div>
   );
 }
