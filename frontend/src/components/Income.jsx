@@ -11,11 +11,11 @@ import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import downloadIncomesToExcel from '../utils/downloadIncomesToExcel.js';
 
 
 
 export default function Income() {
-    // const [income, setIncome] = useState(0);
     const [incomeProp, setIncomeProp] = useState(0);
     const [expense, setExpense] = useState(0);
     const [allIncome, setAllIncome] = useState([]);
@@ -113,12 +113,7 @@ export default function Income() {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
-    const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
 
 
     return (
@@ -169,38 +164,23 @@ export default function Income() {
             <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-evenly', flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "", gap: 2, }}>
                 <Box sx={{ width: { xs: '100%', md: '50%' }, m: !isMobile ? 3 : 0, mr: !isMobile ? 1.5 : 0, }} size={{ xs: 12, md: 6 }}>
                     <Paper sx={{ p: 1, borderRadius: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                        <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                             Recent income transactions
-                            <div>
-                                {/* <div>
-                                    <Button
-                                        id="basic-button"
-                                        aria-controls={Open ? 'basic-menu' : undefined}
-                                        aria-haspopup="true"
-                                        aria-expanded={Open ? 'true' : undefined}
-                                        onClick={handleClick}
-                                    >
-                                        Filter By
-                                    </Button>
-                                    <Menu
-                                        id="basic-menu"
-                                        anchorEl={anchorEl}
-                                        open={open}
-                                        onClose={handleClose}
-                                        MenuListProps={{
-                                            'aria-labelledby': 'basic-button',
-                                        }}
-                                    >
-                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                                    </Menu>
-                                </div> */}
+
+                            <Box sx={{display:"flex",gap:1}}>  
                                 <Button variant="contained" style={{
-                                    float: 'right', fontSize: '12px'
-                                }}
-                                    onClick={() => { setOpen(true) }}>Add Income</Button>
-                            </div>
+                             textTransform: 'none'
+                            }}
+                                onClick={() => { setOpen(true) }}>Add Income</Button>
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => downloadIncomesToExcel(currentTransactions)}
+                                    sx={{ textTransform: 'none' }}
+                                >
+                                    Download Excel
+                                </Button>
+                            </Box>
+
                         </Typography>
                         <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
                             <List>

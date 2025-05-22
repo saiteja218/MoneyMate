@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getIncome, getExpense } from '../store/slices/transactionSlice';
 import formatDate from '../utils/formatDate.js';
-import { Grid, Paper, Typography, List, ListItem, ListItemText, Box, Pagination, useTheme, useMediaQuery } from '@mui/material';
+import { Grid, Paper, Typography, List, ListItem, ListItemText, Box, Pagination, useTheme, useMediaQuery ,Button} from '@mui/material';
 // import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, } from 'recharts';
 import TopCards from './TopCards.jsx';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 import { PieChart } from '@mui/x-charts/PieChart';
+import downloadTransactionsToExcel from '../utils/downloadTransactionsToExcel.js';
 
 export default function ExpenditureOverview() {
   const [income, setIncome] = useState(0);
@@ -52,12 +53,26 @@ export default function ExpenditureOverview() {
     (a, b) => new Date(b.date) - new Date(a.date)
   );
 
+
+
   const totalTransactions = allTransactions.length;
   const totalPages = Math.ceil(totalTransactions / transactionsPerPage);
   const startIndex = (currentPage - 1) * transactionsPerPage;
   const endIndex = startIndex + transactionsPerPage;
   const currentTransactions = allTransactions.slice(startIndex, endIndex);
+
   // console.log(totalPages)
+
+  const formattedTransactions = allTransactions.map((t) => ({
+    source: t.source || t.category || 'N/A',
+    amount: t.amount,
+    date: new Date(t.date).toISOString().split('T')[0],
+    type: t.source ? "Income" : "Expanse"
+
+  }))
+  // console.log(allIncome)
+  // console.log(allExpense)
+  // console.log(formattedTransactions)
 
   const chartData = [
     { id: 0, value: income, label: 'Income', color: '#40ad86' },
@@ -70,12 +85,19 @@ export default function ExpenditureOverview() {
   return (
     <div >
       <TopCards income={income} expense={expense} />
-      <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-evenly', flexDirection: isMobile ? "column" : "row",alignItems: isMobile ? "center" : "",gap:2, }}>
+      <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-evenly', flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "", gap: 2, }}>
 
-        <Box sx={{ width: { xs: '100%', md: '50%' }, m:!isMobile?3:0, mr: !isMobile ? 1.5 : 0, }} size={{ xs: 12, md: 6 }}>
+        <Box sx={{ width: { xs: '100%', md: '50%' }, m: !isMobile ? 3 : 0, mr: !isMobile ? 1.5 : 0, }} size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 1, borderRadius: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom sx={{display:"flex",justifyContent:"space-between",alignItems:"center",ml:1}}>
               Recent Transactions
+              <Button
+                onClick={ ()=>{downloadTransactionsToExcel(formattedTransactions)}}
+                variant="outlined"
+                sx={{ textTransform: 'none' }}
+              >
+                Download Excel
+              </Button>
             </Typography>
             <Box sx={{ flexGrow: 1 }}>
               <List >
@@ -95,7 +117,7 @@ export default function ExpenditureOverview() {
               </List>
             </Box>
             <Box>
-              <Pagination sx={{ mt: "auto", display: 'flex', justifyContent: 'center',p:1 }}
+              <Pagination sx={{ mt: "auto", display: 'flex', justifyContent: 'center', p: 1 }}
                 count={totalPages}
                 page={currentPage}
                 onChange={(e, value) => {
@@ -108,9 +130,9 @@ export default function ExpenditureOverview() {
           </Paper>
         </Box>
 
-        <Box sx={{ width: { xs: '100%', md: '50%' }, m:!isMobile?3:1, ml: !isMobile ? 1.5 : 0 }} size={{ xs: 12, md: 6 }}>
+        <Box sx={{ width: { xs: '100%', md: '50%' }, m: !isMobile ? 3 : 1, ml: !isMobile ? 1.5 : 0 }} size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 1, borderRadius: 2, height: '100%' }}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom sx={{ml:1}}>
               Financial Overview
             </Typography>
             <Box sx={{ height: 400 }}>

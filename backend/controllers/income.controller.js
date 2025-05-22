@@ -55,3 +55,83 @@ export const deleteIncome=async(req,res)=>{
         
     }
 }
+
+export const toExcel = async (req, res) => {
+    const incomes = req.body;
+    try {
+        const { default: ExcelJS } = await import('exceljs');;
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Incomes');
+
+        worksheet.columns = [
+            { header: 'Source', key: 'source', width: 20 },
+            { header: 'Amount', key: 'amount', width: 15 },
+            { header: 'Date', key: 'date', width: 20 },
+        ]
+
+        incomes.forEach(item => {
+            worksheet.addRow({
+                source: item.source,
+                amount: item.amount,
+                date: new Date(item.date).toISOString().split('T')[0],
+            });
+        });
+
+        res.setHeader(
+            'Content-Disposition',
+            'attachment; filename=incomes.xlsx'
+        )
+        res.setHeader(
+            'Content-type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+
+        await workbook.xlsx.write(res);
+        res.end();
+
+
+
+    } catch (error) {
+        console.log("Error in toExcel controller", error.message)
+        res.status(500).json({ message: "Internal server error" })
+    }
+}
+export const toExcelAllTrasactions = async (req, res) => {
+    const incomes = req.body;
+    // console.log(incomes)
+    try {
+        const { default: ExcelJS } = await import('exceljs');;
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Transactions');
+
+        worksheet.columns = [
+            { header: 'Source', key: 'source', width: 20 },
+            { header: 'Amount', key: 'amount', width: 15 },
+            { header: 'Date', key: 'date', width: 15 },
+            { header: 'Type', key: 'type', width: 20 },
+        ]
+
+        incomes.forEach((tx) => {
+           worksheet.addRow(tx);
+    });
+
+
+        res.setHeader(
+            'Content-Disposition',
+            'attachment; filename=transactions.xlsx'
+        )
+        res.setHeader(
+            'Content-type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+
+        await workbook.xlsx.write(res);
+        res.end();
+
+
+
+    } catch (error) {
+        console.log("Error in toExcelAllTransactions controller", error.message)
+        res.status(500).json({ message: "Internal server error" })
+    }
+}

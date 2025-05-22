@@ -9,11 +9,12 @@ import TopCards from './TopCards';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 import DeleteIcon from '@mui/icons-material/Delete';
+import downloadExcel from '../utils/downloadExpense.js';
 
 export default function Expense() {
     const [income, setIncome] = useState(0);
     // const [expense, setExpense] = useState(0);
-    const [allIncome, setAllIncome] = useState([]); 
+    const [allIncome, setAllIncome] = useState([]);
     const [allExpense, setAllExpense] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const transactionsPerPage = 5;
@@ -24,7 +25,7 @@ export default function Expense() {
         date: null
     })
     const dispatch = useDispatch();
-const expense = allExpense.reduce((acc, item) => acc + item.amount, 0);
+    const expense = allExpense.reduce((acc, item) => acc + item.amount, 0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -98,6 +99,8 @@ const expense = allExpense.reduce((acc, item) => acc + item.amount, 0);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
+
+
     return (
         <>
             <TopCards income={income} expense={expense} />
@@ -145,13 +148,26 @@ const expense = allExpense.reduce((acc, item) => acc + item.amount, 0);
             <Box sx={{ padding: 1, display: 'flex', justifyContent: 'space-evenly', flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "", gap: 2, }}>
                 <Box sx={{ width: { xs: '100%', md: '50%' }, m: !isMobile ? 3 : 0, mr: !isMobile ? 1.5 : 0, }} size={{ xs: 12, md: 6 }}>
                     <Paper sx={{ p: 1, borderRadius: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                        <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' ,ml:1}}>
                             Recent Expense Transactions
-                            <button style={{
-                                float: 'right', padding: "3px 8px", backgroundColor: "#1876d3", color: "white", borderRadius: "5px", fontWeight: "600", margin: "5px", border: "none"
-                            }}
-                                onClick={() => { setOpen(true) }}>Add Expense</button>
+                            <Box  sx={{display:"flex",gap:1}}>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setOpen(true)}
+                                    sx={{  textTransform: 'none' }}
+                                >
+                                    Add Expense
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    onClick={()=>downloadExcel(currentTransactions,2)}
+                                    sx={{ textTransform: 'none' }}
+                                >
+                                    Download Excel
+                                </Button>
+                            </Box>
                         </Typography>
+
                         <Box sx={{ flexGrow: 1, overFlowY: 'auto' }}>
                             <List>
                                 {currentTransactions.map((transaction, index) => (
@@ -201,7 +217,7 @@ const expense = allExpense.reduce((acc, item) => acc + item.amount, 0);
                         <Typography variant="h6" gutterBottom>
                             Expense Over Time
                         </Typography>
-                            <LineChart 
+                        <LineChart
                             xAxis={[{ scaleType: 'band', data: lineChartData.map((d) => (d.date)) }]}
                             series={[
                                 {
@@ -212,8 +228,8 @@ const expense = allExpense.reduce((acc, item) => acc + item.amount, 0);
                             ]}
                             height={400}
                             margin={{ top: 20, bottom: 50, left: 40, right: 10 }}
-                                
-                            />
+
+                        />
                     </Paper>
                 </Box>
             </Box>

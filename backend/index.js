@@ -6,6 +6,7 @@ import incomeRoutes from './routes/income.routes.js';
 import expenseRoutes from './routes/expense.routes.js';
 import insightsRoutes from './routes/insights.routes.js';
 import savingsRoutes from './routes/savings.routes.js';
+import chatRoutes from './routes/chat.routes.js'
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
@@ -33,6 +34,7 @@ app.use('/api/income', incomeRoutes);
 app.use('/api/expense', expenseRoutes);
 app.use('/api/insights', insightsRoutes);
 app.use('/api/savingsGoal',savingsRoutes);
+app.use('/api/chat',chatRoutes);
 // console.log(process.env.GROQ_API_KEY)
 
 
