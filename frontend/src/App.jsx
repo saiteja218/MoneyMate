@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import NotFound from './components/NotFound';
 
 function App() {
   const user = useSelector((state) => state.auth?.user);
@@ -24,7 +25,7 @@ console.log("OTP Verified:", isOtpVerified);
         <Route path="/signup" element={isAuthenticated ? <Navigate to="/home" /> : <Signup />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to="/home" /> : <Login />} />
         <Route path="/home/*" element={!isAuthenticated ? <Navigate to="/login" /> : <Home />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
 
       <Toaster

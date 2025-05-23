@@ -160,7 +160,7 @@ export default function Expense() {
                                 </Button>
                                 <Button
                                     variant="outlined"
-                                    onClick={()=>downloadExcel(currentTransactions,2)}
+                                    onClick={()=>downloadExcel(currentTransactions,1)}
                                     sx={{ textTransform: 'none' }}
                                 >
                                     Download Excel
